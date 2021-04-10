@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="o'stin, остин, зарплата, зарплатный, заработной, платы, калькулятор">
+  <meta name="description" content="ОСТИН Зарплатный калькулятор">
+  <title>O'STIN Salary Calculator</title>
+  <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color: #575871;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.75;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 360px;
+  min-height: 100vh;
+  margin: 0;
+  padding: 30px;
+  background-color: #fff;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.form {
+  width: 320px;
+  padding: 50px 30px 40px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 0 25px rgb(0 0 0 / 20%);
+  animation-duration: 650ms;
+  transition:
+    filter 250ms 150ms,
+    transform 250ms 150ms,
+    opacity 250ms 150ms;
+}
+
+.form--hidden {
+  filter: blur(40px);
+  transform: scale(0.5);
+  opacity: 0;
+}
+
+.form--shaked {
+  animation-name: shake;
+}
+
+.form__row:not(:first-child) {
+  margin-top: 20px;
+}
+
+.form__row--margin-30:not(:first-child) {
+  margin-top: 30px;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #c7c7cf;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #575871;
+  box-shadow: none;
+  font-weight: normal;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.15;
+  transition: border-color 150ms;
+}
+
+.input::placeholder {
+  color: #c7c7cf;
+}
+
+.input:hover,
+.input:focus {
+  border-color: #8f90a0;
+  outline: 0;
+}
+
+.button {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 22px;
+  background-image: linear-gradient(-45deg, #bc9cff, #8ba4f9, #6fcf97, #66d2ea);
+  background-position: 100% 50%;
+  background-size: 400% 400%;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-position 250ms;
+}
+
+.button:focus {
+  outline: 0;
+}
+
+.button--green {
+  background-position: 0% 50%;
+  transition: none;
+}
+
+.table {
+  width: 100%;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: monospace;
+}
+
+.table__td--value {
+  text-align: right;
+}
+
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+  </style>
+</head>
+<body>
+  <form class="form form--hidden" id="form">
+    <div class="form__row">
+      <label class="label" for="inputRate">Тарифная ставка</label>
+      <input class="input" id="inputRate" type="number" value="24400" placeholder="Чем больше, тем лучше">
+    </div>
+    <div class="form__row">
+      <label class="label" for="inputHours">Отработанные часы</label>
+      <input class="input" id="inputHours" type="number" placeholder="Аккуратнее с переработками">
+    </div>
+    <div class="form__row">
+      <label class="label" for="inputPlan">Процент выполненного плана</label>
+      <input class="input" id="inputPlan" type="number" placeholder="100500%">
+    </div>
+    <div class="form__row form__row--margin-30">
+      <button class="button" id="button" type="button">Рассчитать</button>
+    </div>
+    <div class="form__row form__row--margin-30">
+      <table class="table">
+        <tbody class="table__tbody">
+          <tr class="table__tr">
+            <td class="table__td">Оклад:</td>
+            <td class="table__td table__td--value" id="cell70">0.00 руб.</td>
+          </tr>
+          <tr class="table__tr">
+            <td class="table__td">Аванс:</td>
+            <td class="table__td table__td--value" id="cell30">0.00 руб.</td>
+          </tr>
+          <tr class="table__tr">
+            <td class="table__td">ИТОГО:</td>
+            <td class="table__td table__td--value" id="cell100">¯\_(ツ)_/¯</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <script>
+const form = document.getElementById('form');
+const inputRate = document.getElementById('inputRate');
+const inputHours = document.getElementById('inputHours');
+const inputPlan = document.getElementById('inputPlan');
+const button = document.getElementById('button');
+const cell70 = document.getElementById('cell70');
+const cell30 = document.getElementById('cell30');
+const cell100 = document.getElementById('cell100');
+
+bindEventListeners();
+
+function bindEventListeners() {
+  window.addEventListener('load', () => {
+    showForm();
+  });
+
+  button.addEventListener('click', () => {
+    if (isEmptyField()) {
+      shakeForm();
+      return;
+    }
+
+    writeSalaryInTable(calculateSalary());
+    paintButton();
+  });
+}
+
+function showForm() {
+  form.classList.remove('form--hidden');
+}
+
+function isEmptyField() {
+  return !inputRate.value || !inputHours.value || !inputPlan.value;
+}
+
+function shakeForm() {
+  if (form.classList.contains('form--shaked')) {
+    return;
+  }
+
+  form.classList.add('form--shaked');
+
+  setTimeout(() => {
+    form.classList.remove('form--shaked');
+  }, 750);
+}
+
+function calculateSalary() {
+  const r = num => +(num).toFixed(2);
+
+  const rate = +inputRate.value;
+  const hours = +inputHours.value;
+  const planCoeff = +inputPlan.value / 100;
+
+  const rateTax = r(rate * 0.87);
+  const coeff = r(hours / 168);
+
+  const s70 = r(rateTax * 0.7 * coeff);
+  const s30 = r(rateTax * 0.3 * coeff * planCoeff);
+  const s100 = r(s70 + s30);
+
+  return { s70, s30, s100 }
+}
+
+function writeSalaryInTable(salary) {
+  const { s30, s70, s100 } = salary;
+
+  cell70.textContent = `${s70.toFixed(2)} руб.`;
+  cell30.textContent = `${s30.toFixed(2)} руб.`;
+  cell100.textContent = s100 ? `${s100.toFixed(2)} руб.` : '¯\\_(ツ)_/¯';
+}
+
+function paintButton() {
+  if (button.classList.contains('button--green')) {
+    return;
+  }
+
+  button.classList.add('button--green');
+
+  setTimeout(() => {
+    button.classList.remove('button--green');
+  }, 400);
+}
+  </script>
+</body>
+</html>
