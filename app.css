@@ -162,19 +162,22 @@ input[type=number] {
   outline: 0;
 }
 
-.form--flipped .switcher {
-  visibility: hidden;
-  transition: visibility 1ms 500ms;
-}
-
 .switcher--back {
   right: auto;
   left: 30px;
   background-image: var(--gradient-secondary);
+  visibility: hidden;
+  transition: visibility 1ms 500ms;
+}
+
+.form--flipped .switcher--front {
+  visibility: hidden;
+  transition: visibility 1ms 500ms;
 }
 
 .form--flipped .switcher--back {
   visibility: inherit;
+  transition: none;
 }
 
 .label {
