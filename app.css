@@ -8,6 +8,7 @@
   --color-primary-2   : #8ba4f9;
   --color-secondary-1 : #6fcf97;
   --color-secondary-2 : #66d2ea;
+  --color-red         : #ffa08e;
 
   /* Colors (grayscale) */
   --color-black     : #000000;
@@ -104,8 +105,10 @@ input[type=number] {
   transform: rotateY(180deg);
 }
 
-.form__side {
+.form__front,
+.form__back {
   position: absolute;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   padding: 50px 30px 40px;
@@ -121,16 +124,29 @@ input[type=number] {
     padding-box,
     border-box;
   box-shadow: 0 0 25px rgb(0 0 0 / 20%);
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-.form__side--back {
+.form__back {
   padding-top: 62px;
   background-image:
     var(--gradient-white),
     var(--gradient-secondary);
   font-size: 13px;
+  visibility: hidden;
   transform: rotateY(180deg);
+  transition: visibility 1ms 500ms;
+}
+
+.form--flipped .form__front {
+  visibility: hidden;
+  transition: visibility 1ms 500ms;
+}
+
+.form--flipped .form__back {
+  visibility: inherit;
+  transition: none;
 }
 
 .form__row:not(:first-of-type) {
@@ -166,18 +182,6 @@ input[type=number] {
   right: auto;
   left: 30px;
   background-image: var(--gradient-secondary);
-  visibility: hidden;
-  transition: visibility 1ms 500ms;
-}
-
-.form--flipped .switcher--front {
-  visibility: hidden;
-  transition: visibility 1ms 500ms;
-}
-
-.form--flipped .switcher--back {
-  visibility: inherit;
-  transition: none;
 }
 
 .label {
@@ -198,6 +202,7 @@ input[type=number] {
   font-size: 14px;
   font-family: 'Montserrat', sans-serif;
   line-height: 1.15;
+  animation-duration: 650ms;
   transition: border-color 150ms;
 }
 
@@ -209,6 +214,10 @@ input[type=number] {
 .field:focus {
   border-color: var(--color-gray-50p);
   outline: 0;
+}
+
+.field--highlighted {
+  animation-name: highlight;
 }
 
 .button {
@@ -277,18 +286,40 @@ input[type=number] {
     transform: translate3d(0, 0, 0);
   }
 
-  10%,
-  30%,
+  16.65%,
   50%,
-  70%,
-  90% {
-    transform: translate3d(-2px, 0, 0);
+  83.35% {
+    transform: translate3d(-3px, 0, 0);
   }
 
-  20%,
-  40%,
-  60%,
-  80% {
-    transform: translate3d(2px, 0, 0);
+  33.3%,
+  66.6% {
+    transform: translate3d(3px, 0, 0);
+  }
+}
+
+@keyframes highlight {
+  from,
+  to {
+    box-shadow: none;
+  }
+
+  16.65% {
+    border-color: var(--color-red);
+  }
+
+  16.65%,
+  50%,
+  83.35% {
+    box-shadow: 0 0 3px var(--color-red);
+  }
+
+  33.3%,
+  66.6% {
+    box-shadow: 0 0 4px 1px var(--color-red);
+  }
+
+  83.35% {
+    border-color: var(--color-red);
   }
 }

@@ -27,6 +27,7 @@ function addEventListeners() {
   buttonCalculate.addEventListener('click', () => {
     if (isEmptyField()) {
       shakeForm();
+      highlightEmptyFields();
       return;
     }
 
@@ -60,6 +61,34 @@ function shakeForm() {
 
   setTimeout(() => {
     form.classList.remove('form--shaked');
+  }, 650);
+}
+
+function highlightEmptyFields() {
+  if (!inputRate.value) {
+    highlightField(inputRate);
+  }
+
+  if (!inputHours.value) {
+    highlightField(inputHours);
+  }
+
+  if (!inputPlan.value) {
+    highlightField(inputPlan);
+  }
+}
+
+function highlightField(field) {
+  const fcl = field.classList;
+
+  if (fcl.contains('field--highlighted')) {
+    return;
+  }
+
+  fcl.add('field--highlighted');
+
+  setTimeout(() => {
+    fcl.remove('field--highlighted');
   }, 650);
 }
 
