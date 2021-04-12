@@ -77,9 +77,9 @@ input[type=number] {
   height: 555px;
   animation-duration: 650ms;
   transition:
-    filter 500ms 150ms,
-    transform 500ms 150ms,
-    opacity 500ms 150ms;
+    filter 500ms,
+    transform 500ms,
+    opacity 500ms;
   perspective: 1110px;
 }
 
