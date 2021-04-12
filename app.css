@@ -171,15 +171,15 @@ input[type=number] {
   padding: 0;
   border: 0;
   border-radius: 0 0 50% 50%;
-  background-repeat:
-    no-repeat,
-    repeat;
   background-position:
     50% 45%,
     0% 0%;
   background-size:
     45% 45%,
     auto;
+  background-repeat:
+    no-repeat,
+    repeat;
   color: var(--color-white);
   font-weight: bold;
   font-size: 0;
@@ -221,7 +221,7 @@ input[type=number] {
   box-shadow: none;
   font-weight: normal;
   font-size: 14px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-family-primary);
   line-height: 1.15;
   animation-duration: 650ms;
   transition: border-color 150ms;
