@@ -81,6 +81,10 @@ input[type=number] {
     transform 500ms,
     opacity 500ms;
   perspective: 1110px;
+  will-change:
+    filter,
+    transform,
+    opacity;
 }
 
 .form--hidden {
@@ -99,6 +103,7 @@ input[type=number] {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 500ms;
+  will-change: transform;
 }
 
 .form--flipped .form__container {
@@ -204,6 +209,9 @@ input[type=number] {
   line-height: 1.15;
   animation-duration: 650ms;
   transition: border-color 150ms;
+  will-change:
+    border-color,
+    box-shadow;
 }
 
 .field::placeholder {
@@ -237,6 +245,7 @@ input[type=number] {
   text-transform: uppercase;
   cursor: pointer;
   transition: background-position 250ms;
+  will-change: background-position;
 }
 
 .button:focus {

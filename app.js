@@ -37,7 +37,9 @@ function addEventListeners() {
 }
 
 function showForm() {
-  form.classList.remove('form--hidden');
+  setTimeout(() => {
+    form.classList.remove('form--hidden');
+  }, 100);
 }
 
 function flipForm() {
