@@ -1,137 +1,146 @@
-const form = document.getElementById('form');
-const buttonFlip = document.getElementById('buttonFlip');
-const buttonUnflip = document.getElementById('buttonUnflip');
-const buttonCalculate = document.getElementById('buttonCalculate');
-const inputRate = document.getElementById('inputRate');
-const inputHours = document.getElementById('inputHours');
-const inputPlan = document.getElementById('inputPlan');
-const cell70 = document.getElementById('cell70');
-const cell30 = document.getElementById('cell30');
-const cell100 = document.getElementById('cell100');
+'use strict';
 
-addEventListeners();
+(function() {
+  const b = document.body;
 
-function addEventListeners() {
-  window.addEventListener('load', () => {
-    showForm();
-  });
+  const form = b.querySelector('form.form');
+  const formFront = b.querySelector('div.form__front');
+  const switcherFront = b.querySelector('button.form__switcher--front');
+  const switcherBack = b.querySelector('button.form__switcher--back');
+  const button = b.querySelector('button.button');
+  const fields = b.querySelectorAll('input.label__field');
+  const cellsValues = b.querySelectorAll('td.table__cell--value');
 
-  buttonFlip.addEventListener('click', () => {
-    flipForm();
-  });
+  addEventListeners();
 
-  buttonUnflip.addEventListener('click', () => {
-    unflipForm();
-  });
+  function addEventListeners() {
+    window.addEventListener('load', () => {
+      showForm();
+    });
 
-  buttonCalculate.addEventListener('click', () => {
-    if (isEmptyField()) {
-      shakeForm();
-      highlightEmptyFields();
+    switcherFront.addEventListener('click', () => {
+      flipForm();
+    });
+
+    switcherBack.addEventListener('click', () => {
+      unflipForm();
+    });
+
+    button.addEventListener('click', () => {
+      if (isEmptyField()) {
+        highlightEmptyFields();
+        shakeForm();
+        return;
+      }
+
+      paintFormFront();
+      writeSalary(calculateSalary());
+    });
+  }
+
+  function showForm() {
+    setTimeout(() => {
+      form.classList.remove('form--hidden');
+    }, 100);
+  }
+
+  function flipForm() {
+    form.classList.add('form--flipped');
+  }
+
+  function unflipForm() {
+    form.classList.remove('form--flipped');
+  }
+
+  function isEmptyField() {
+    for (const field of fields) {
+      if (!field.value) {
+        return true;
+      }
+    }
+  }
+
+  function highlightEmptyFields() {
+    for (const field of fields) {
+      if (!field.value) {
+        highlightField(field);
+      }
+    }
+  }
+
+  function highlightField(field) {
+    const fcl = field.classList;
+
+    if (fcl.contains('label__field--highlighted')) {
       return;
     }
 
-    paintButton();
-    writeSalary(calculateSalary());
-  });
-}
+    fcl.add('label__field--highlighted');
 
-function showForm() {
-  setTimeout(() => {
-    form.classList.remove('form--hidden');
-  }, 100);
-}
-
-function flipForm() {
-  form.classList.add('form--flipped');
-}
-
-function unflipForm() {
-  form.classList.remove('form--flipped');
-}
-
-function isEmptyField() {
-  return !inputRate.value || !inputHours.value || !inputPlan.value;
-}
-
-function shakeForm() {
-  if (form.classList.contains('form--shaked')) {
-    return;
+    setTimeout(() => {
+      fcl.remove('label__field--highlighted');
+    }, 650);
   }
 
-  form.classList.add('form--shaked');
+  function shakeForm() {
+    const fcl = form.classList;
 
-  setTimeout(() => {
-    form.classList.remove('form--shaked');
-  }, 650);
-}
+    if (fcl.contains('form--shaked')) {
+      return;
+    }
 
-function highlightEmptyFields() {
-  if (!inputRate.value) {
-    highlightField(inputRate);
+    fcl.add('form--shaked');
+
+    setTimeout(() => {
+      fcl.remove('form--shaked');
+    }, 650);
   }
 
-  if (!inputHours.value) {
-    highlightField(inputHours);
+  function paintFormFront() {
+    const ffcl = formFront.classList;
+    const sfcl = switcherFront.classList;
+    const bcl = button.classList;
+
+    if (ffcl.contains('form__front--green')) {
+      return;
+    }
+
+    ffcl.add('form__front--green');
+    sfcl.add('form__switcher--green');
+    bcl.add('button--green');
+
+    setTimeout(() => {
+      ffcl.remove('form__front--green');
+      sfcl.remove('form__switcher--green');
+      bcl.remove('button--green');
+    }, 400);
   }
 
-  if (!inputPlan.value) {
-    highlightField(inputPlan);
-  }
-}
+  function calculateSalary() {
+    const r = num => +(num).toFixed(2);
 
-function highlightField(field) {
-  const fcl = field.classList;
+    const rate = +fields[0].value;
+    const hours = +fields[1].value;
+    const plan = +fields[2].value;
 
-  if (fcl.contains('field--highlighted')) {
-    return;
-  }
+    const rateTax = r(rate * 0.87);
+    const coeffHours = r(hours / 168);
+    const coeffPlan = plan / 100;
 
-  fcl.add('field--highlighted');
+    const s70 = r(rateTax * 0.7 * coeffHours);
+    const s30 = r(rateTax * 0.3 * coeffHours * coeffPlan);
+    const s100 = r(s70 + s30);
 
-  setTimeout(() => {
-    fcl.remove('field--highlighted');
-  }, 650);
-}
-
-function paintButton() {
-  const bcl = buttonCalculate.classList;
-
-  if (bcl.contains('button--green')) {
-    return;
+    return { s70, s30, s100 };
   }
 
-  bcl.add('button--green');
+  function writeSalary(salary) {
+    const { s30, s70, s100 } = salary;
 
-  setTimeout(() => {
-    bcl.remove('button--green');
-  }, 400);
-}
-
-function calculateSalary() {
-  const r = num => +(num).toFixed(2);
-
-  const rate = +inputRate.value;
-  const hours = +inputHours.value;
-  const plan = +inputPlan.value;
-
-  const rateTax = r(rate * 0.87);
-  const coeffHours = r(hours / 168);
-  const coeffPlan = plan / 100;
-
-  const s70 = r(rateTax * 0.7 * coeffHours);
-  const s30 = r(rateTax * 0.3 * coeffHours * coeffPlan);
-  const s100 = r(s70 + s30);
-
-  return { s70, s30, s100 };
-}
-
-function writeSalary(salary) {
-  const { s30, s70, s100 } = salary;
-
-  cell70.textContent = `${s70.toFixed(2)} руб.`;
-  cell30.textContent = `${s30.toFixed(2)} руб.`;
-  cell100.textContent = s100
-    ? `${s100.toFixed(2)} руб.`
-    : '¯\\_(ツ)_/¯';
-}
+    cellsValues[0].textContent = `${s70.toFixed(2)} руб.`;
+    cellsValues[1].textContent = `${s30.toFixed(2)} руб.`;
+    cellsValues[2].textContent = s100
+      ? `${s100.toFixed(2)} руб.`
+      : '¯\\_(ツ)_/¯';
+  }
+})();

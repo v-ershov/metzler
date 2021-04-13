@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="keywords" content="o'stin, остин, зарплата, зарплатный, заработной, платы, калькулятор">
   <meta name="description" content="ОСТИН Зарплатный калькулятор">
@@ -10,82 +9,93 @@
   <link href="./app.css" rel="stylesheet">
 </head>
 <body>
-  <h1 class="h1 visually-hidden">ОСТИН Зарплатный калькулятор</h1>
-  <form class="form form--hidden" id="form">
-    <div class="form__container">
-      <div class="form__front">
-        <button class="switcher switcher--front" id="buttonFlip" type="button">Перевернуть</button>
-        <div class="form__row">
-          <label class="label" for="inputRate">Тарифная ставка</label>
-          <input class="field" id="inputRate" type="number" placeholder="Чем больше, тем лучше" value="24400">
+  <div class="wrapper">
+    <h1 class="wrapper__heading visually-hidden">ОСТИН Зарплатный калькулятор</h1>
+    <form class="form form--hidden">
+      <div class="form__container">
+        <div class="form__front">
+          <button class="form__switcher form__switcher--front" type="button">Перевернуть</button>
+          <h2 class="form__heading visually-hidden">Посчитаем зарплату?</h2>
+          <div class="form__row">
+            <label class="label">
+              Тарифная ставка
+              <input class="label__field" type="number" placeholder="Чем больше, тем лучше" value="24400">
+            </label>
+          </div>
+          <div class="form__row">
+            <label class="label">
+              Отработанные часы
+              <input class="label__field" type="number" placeholder="Аккуратнее с переработками">
+            </label>
+          </div>
+          <div class="form__row">
+            <label class="label">
+              Процент выполненного плана
+              <input class="label__field" type="number" placeholder="100500%">
+            </label>
+          </div>
+          <div class="form__row form__row--margin-30">
+            <button class="button" type="button">Рассчитать</button>
+          </div>
+          <div class="form__row form__row--margin-25">
+            <table class="table">
+              <tbody class="table__body">
+                <tr class="table__row">
+                  <td class="table__cell">Оклад:</td>
+                  <td class="table__cell table__cell--value">0.00 руб.</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__cell">Аванс:</td>
+                  <td class="table__cell table__cell--value">0.00 руб.</td>
+                </tr>
+                <tr class="table__row">
+                  <td class="table__cell">ИТОГО:</td>
+                  <td class="table__cell table__cell--value">¯\_(ツ)_/¯</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="form__row">
-          <label class="label" for="inputHours">Отработанные часы</label>
-          <input class="field" id="inputHours" type="number" placeholder="Аккуратнее с переработками">
-        </div>
-        <div class="form__row">
-          <label class="label" for="inputPlan">Процент выполненного плана</label>
-          <input class="field" id="inputPlan" type="number" placeholder="100500%">
-        </div>
-        <div class="form__row form__row--margin-30">
-          <button class="button" id="buttonCalculate" type="button">Рассчитать</button>
-        </div>
-        <div class="form__row form__row--margin-30">
-          <table class="table">
-            <tbody class="table__tbody">
-              <tr class="table__tr">
-                <td class="table__td">Оклад:</td>
-                <td class="table__td table__td--value" id="cell70">0.00 руб.</td>
-              </tr>
-              <tr class="table__tr">
-                <td class="table__td">Аванс:</td>
-                <td class="table__td table__td--value" id="cell30">0.00 руб.</td>
-              </tr>
-              <tr class="table__tr">
-                <td class="table__td">ИТОГО:</td>
-                <td class="table__td table__td--value" id="cell100">¯\_(ツ)_/¯</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="form__back">
+          <button class="form__switcher form__switcher--back" type="button">Развернуть</button>
+          <h2 class="form__heading">Как проводятся расчёты?</h2>
+          <p class="form__paragraph">Получаем исходные данные:</p>
+          <ul class="form__list">
+            <li class="form__item">
+              <code class="form__code">ТАРИФ</code> (тарифная ставка)
+            </li>
+            <li class="form__item">
+              <code class="form__code">ЧАСЫ</code> (отработанные часы)
+            </li>
+            <li class="form__item">
+              <code class="form__code">ПЛАН</code> (процент выполненного плана)
+            </li>
+          </ul>
+          <p class="form__paragraph">Считаем следующие переменные:</p>
+          <ul class="form__list">
+            <li class="form__item">
+              <code class="form__code">ТМН</code> (тарифная ставка - НДФЛ):<br>
+              <code class="form__code">ТАРИФ * 0.87</code>
+            </li>
+            <li class="form__item">
+              <code class="form__code">КЧ</code> (коэфф. отработанных часов):<br>
+              <code class="form__code">ЧАСЫ / 168</code>
+            </li>
+            <li class="form__item">
+              <code class="form__code">КП</code> (коэфф. выполненного плана):<br>
+              <code class="form__code">ПЛАН / 100</code>
+            </li>
+          </ul>
+          <p class="form__paragraph">
+            Наконец, считаем заработную плату:<br>
+            <code class="form__code">ОКЛАД = ТМН * 0.7 * КЧ</code><br>
+            <code class="form__code">АВАНС = ТМН * 0.3 * КЧ * КП</code><br>
+            <code class="form__code">ИТОГО = ОКЛАД + АВАНС</code><br>
+          </p>
         </div>
       </div>
-      <div class="form__back">
-        <button class="switcher switcher--back" id="buttonUnflip" type="button">Развернуть</button>
-        <h2 class="h2">Как проводятся расчёты?</h2>
-        <p class="p">Получаем исходные данные:</p>
-        <ul class="ul">
-          <li class="li">
-            <code class="code">ТАРИФ</code> (тарифная ставка)
-          </li>
-          <li class="li">
-            <code class="code">ЧАСЫ</code> (отработанные часы)
-          </li>
-          <li class="li">
-            <code class="code">ПЛАН</code> (процент выполненного плана)
-          </li>
-        </ul>
-        <p class="p">Считаем следующие переменные:</p>
-        <ul class="ul">
-          <li class="li">
-            <code class="code">ТМН</code> (тарифная ставка - НДФЛ):<br>
-            <code class="code">ТАРИФ * 0.87</code>
-          </li>
-          <li class="li">
-            <code class="code">КЧ</code> (коэфф. отработанных часов):<br>
-            <code class="code">ЧАСЫ / 168</code></li>
-          <li class="li">
-            <code class="code">КП</code> (коэфф. выполненного плана):<br>
-            <code class="code">ПЛАН / 100</code></li>
-        </ul>
-        <p class="p">
-          Наконец, считаем заработную плату:<br>
-          <code class="code">ОКЛАД = ТМН * 0.7 * КЧ</code><br>
-          <code class="code">АВАНС = ТМН * 0.3 * КЧ * КП</code><br>
-          <code class="code">ИТОГО = ОКЛАД + АВАНС</code><br>
-        </p>
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
   <script src="./app.js"></script>
 </body>
 </html>
