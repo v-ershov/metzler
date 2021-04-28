@@ -80,20 +80,17 @@ input[type=number] {
   height: 555px;
   animation-duration: 650ms;
   transition:
-    filter 500ms,
     transform 500ms,
     opacity 500ms;
   will-change:
-    filter,
     transform,
     opacity;
   perspective: 1110px;
 }
 
 .form--hidden {
-  filter: blur(40px);
-  transform: scale(0.75);
-  opacity: 0;
+  transform: scale(0.95);
+  opacity: 0.01;
 }
 
 .form--shaked {
